@@ -23,10 +23,10 @@ public class KobDataContext : DbContext
     /// <summary>
     /// Configure DB Context.
     /// </summary>
-    /// <param name="options"></param>
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
+    /// <param name="optionsBuilder"></param>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        options.UseSqlite(Configuration.GetConnectionString("sql_connection"));
+        optionsBuilder.UseSqlite(Configuration.GetConnectionString("sql_connection"));
     }
 
     public virtual DbSet<Beer> Beer { get; set; }

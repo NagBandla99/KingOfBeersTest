@@ -45,6 +45,7 @@ namespace NB.KingOfBeers.Api.Controllers
 
             if (!validation.IsValid)
             {
+                logger.LogInformation("Invalid attempt to add new beer entry.");
                 return this.FluentValidationProblem(validation);
             }
 
