@@ -9,6 +9,7 @@ public class BeerDto
     /// beer entry id.
     /// </summary>
     public int BeerId { get; set; }
+
     /// <summary>
     /// Beer name.
     /// </summary>

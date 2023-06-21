@@ -39,6 +39,7 @@ public class Startup
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddTransient<IBeerService, BeerService>();
+        services.AddTransient<IBreweryService, BreweryService>();
 
         services.AddDbContext<KobDataContext>(item =>
             {
