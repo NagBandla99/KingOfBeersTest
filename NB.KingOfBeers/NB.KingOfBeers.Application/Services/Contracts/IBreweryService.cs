@@ -32,9 +32,9 @@ public interface IBreweryService
     /// <summary>
     /// Update beer entry.
     /// </summary>
-    /// <param name="updateBeerModel"></param>
+    /// <param name="updateBrewery"></param>
     /// <returns></returns>
-    Task<BreweryDto> UpdateBrewery(BreweryDto updateBeerModel);
+    Task<BreweryDto> UpdateBrewery(BreweryDto updateBrewery);
     
     /// <summary>
     /// Add new beer entry.

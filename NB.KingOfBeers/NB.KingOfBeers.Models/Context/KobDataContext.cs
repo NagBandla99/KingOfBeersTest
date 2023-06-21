@@ -32,4 +32,5 @@ public class KobDataContext : DbContext
     public virtual DbSet<Beer> Beer { get; set; }
     public DbSet<Bar> Bar { get; set; }
     public DbSet<Brewery> Brewery { get; set; }
+    public DbSet<BreweryBeers> BreweryBeer { get; set; }
 }

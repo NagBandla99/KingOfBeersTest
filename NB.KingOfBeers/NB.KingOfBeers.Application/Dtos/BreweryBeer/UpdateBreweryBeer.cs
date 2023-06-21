@@ -1,15 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace NB.KingOfBeers.Application.Dtos.BreweryBeer;
 
-namespace NB.KingOfBeers.Database.Models;
-
-public class BreweryBeer
+public  class UpdateBreweryBeer
 {
     /// <summary>
-    /// Brewery Beer Id.
+    /// id.
     /// </summary>
-    [Key]
     public int BreweryBeerId { get; set; }
-
     /// <summary>
     /// Brewery Id.
     /// </summary>
@@ -19,8 +15,4 @@ public class BreweryBeer
     /// Beer id.
     /// </summary>
     public int BeerId { get; set; }
-
-    public virtual Brewery Brewery { get; set; }
-
-    public virtual Beer Beer { get; set; }
 }
