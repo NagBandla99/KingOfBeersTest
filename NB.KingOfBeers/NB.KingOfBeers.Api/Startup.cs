@@ -41,6 +41,7 @@ public class Startup
         services.AddTransient<IBeerService, BeerService>();
         services.AddTransient<IBreweryService, BreweryService>();
         services.AddTransient<IBreweryBeerService, BreweryBeerService>();
+        services.AddTransient<IBarService, BarService>();
 
         services.AddDbContext<KobDataContext>(item =>
             {
