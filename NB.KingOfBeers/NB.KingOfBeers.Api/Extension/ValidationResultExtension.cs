@@ -1,24 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 
-namespace NB.KingOfBeers.Api.Extension
+namespace NB.KingOfBeers.Api.Extension;
+
+public static class ValidationResultExtension
 {
-    public static class ValidationResultExtension
+    public static void AddToModelState(this ValidationResult result, ModelStateDictionary modelState)
     {
-        public static void AddToModelState(this ValidationResult result, ModelStateDictionary modelState)
+        if (result.IsValid) return;
+        foreach (var error in result.Errors)
         {
-            if (result.IsValid) return;
-            foreach (var error in result.Errors)
-            {
-                modelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            }
+            modelState.AddModelError(error.PropertyName, error.ErrorMessage);
         }
+    }
 
-        public static IActionResult FluentValidationProblem(this ControllerBase controller, ValidationResult result)
-        {
-            result.AddToModelState(controller.ModelState);
+    public static IActionResult FluentValidationProblem(this ControllerBase controller, ValidationResult result)
+    {
+        result.AddToModelState(controller.ModelState);
 
-            return controller.ValidationProblem();
-        }
+        return controller.ValidationProblem();
     }
 }

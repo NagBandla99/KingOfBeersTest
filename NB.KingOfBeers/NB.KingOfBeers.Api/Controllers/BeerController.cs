@@ -4,19 +4,17 @@ using NB.KingOfBeers.Application.Services.Contracts;
 
 namespace NB.KingOfBeers.Api.Controllers
 {
-
     [ApiController]
     [Route("[controller]")]
     public class BeerController : ControllerBase
     {
-
         private readonly IBeerService beerService;
         private readonly ILogger<BeerController> logger;
         private readonly IValidator<AddBeer> beerDtoValidator;
 
         public BeerController(ILogger<BeerController> logger, IBeerService beerService, IValidator<AddBeer> beerDtoValidator)
         {
-            this.logger = logger;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.beerService = beerService ?? throw new ArgumentNullException(nameof(beerService));
             this.beerDtoValidator = beerDtoValidator ?? throw new ArgumentNullException(nameof(beerDtoValidator));
         }
@@ -29,9 +27,8 @@ namespace NB.KingOfBeers.Api.Controllers
             return this.Ok(getBeersResult);
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> SearchBeerAsync([FromQuery]SearchBeers searchBeer)
+        public async Task<IActionResult> SearchBeerAsync([FromQuery] SearchBeers searchBeer)
         {
             var getBeersResult = await this.beerService.GetByAlcoholVolume(searchBeer);
 
@@ -45,7 +42,7 @@ namespace NB.KingOfBeers.Api.Controllers
 
             if (!validation.IsValid)
             {
-                logger.LogInformation("Invalid attempt to add new beer entry.");
+                this.logger.LogInformation("Invalid attempt to add new beer entry.");
                 return this.FluentValidationProblem(validation);
             }
 
@@ -53,7 +50,6 @@ namespace NB.KingOfBeers.Api.Controllers
 
             return this.Ok(addBeerEntryResult);
         }
-
 
         [HttpPut("{BeerId:int}")]
         public async Task<IActionResult> UpdateBeerAsync(BeerDto updateBeer)
