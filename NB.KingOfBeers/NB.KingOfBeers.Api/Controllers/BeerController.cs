@@ -2,61 +2,60 @@ using NB.KingOfBeers.Api.Extension;
 using NB.KingOfBeers.Application.Dtos;
 using NB.KingOfBeers.Application.Services.Contracts;
 
-namespace NB.KingOfBeers.Api.Controllers
+namespace NB.KingOfBeers.Api.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class BeerController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class BeerController : ControllerBase
+    private readonly IBeerService beerService;
+    private readonly ILogger<BeerController> logger;
+    private readonly IValidator<AddBeer> beerDtoValidator;
+
+    public BeerController(ILogger<BeerController> logger, IBeerService beerService, IValidator<AddBeer> beerDtoValidator)
     {
-        private readonly IBeerService beerService;
-        private readonly ILogger<BeerController> logger;
-        private readonly IValidator<AddBeer> beerDtoValidator;
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        this.beerService = beerService ?? throw new ArgumentNullException(nameof(beerService));
+        this.beerDtoValidator = beerDtoValidator ?? throw new ArgumentNullException(nameof(beerDtoValidator));
+    }
 
-        public BeerController(ILogger<BeerController> logger, IBeerService beerService, IValidator<AddBeer> beerDtoValidator)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
+    {
+        var getBeersResult = await this.beerService.GetById(id);
+
+        return this.Ok(getBeersResult);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SearchBeerAsync([FromQuery] SearchBeers searchBeer)
+    {
+        var getBeersResult = await this.beerService.GetByAlcoholVolume(searchBeer);
+
+        return this.Ok(getBeersResult);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PostAsync(AddBeer beerDto, CancellationToken cancellationToken)
+    {
+        var validation = await this.beerDtoValidator.ValidateAsync(beerDto, cancellationToken);
+
+        if (!validation.IsValid)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.beerService = beerService ?? throw new ArgumentNullException(nameof(beerService));
-            this.beerDtoValidator = beerDtoValidator ?? throw new ArgumentNullException(nameof(beerDtoValidator));
+            this.logger.LogInformation("Invalid attempt to add new beer entry.");
+            return this.FluentValidationProblem(validation);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
-        {
-            var getBeersResult = await this.beerService.GetById(id);
+        var addBeerEntryResult = await this.beerService.AddBeer(beerDto);
 
-            return this.Ok(getBeersResult);
-        }
+        return this.Ok(addBeerEntryResult);
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> SearchBeerAsync([FromQuery] SearchBeers searchBeer)
-        {
-            var getBeersResult = await this.beerService.GetByAlcoholVolume(searchBeer);
+    [HttpPut("{BeerId:int}")]
+    public async Task<IActionResult> UpdateBeerAsync(BeerDto updateBeer)
+    {
+        var getBeersResult = await this.beerService.UpdateBeer(updateBeer);
 
-            return this.Ok(getBeersResult);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostAsync(AddBeer beerDto, CancellationToken cancellationToken)
-        {
-            var validation = await this.beerDtoValidator.ValidateAsync(beerDto, cancellationToken);
-
-            if (!validation.IsValid)
-            {
-                this.logger.LogInformation("Invalid attempt to add new beer entry.");
-                return this.FluentValidationProblem(validation);
-            }
-
-            var addBeerEntryResult = await this.beerService.AddBeer(beerDto);
-
-            return this.Ok(addBeerEntryResult);
-        }
-
-        [HttpPut("{BeerId:int}")]
-        public async Task<IActionResult> UpdateBeerAsync(BeerDto updateBeer)
-        {
-            var getBeersResult = await this.beerService.UpdateBeer(updateBeer);
-
-            return this.Ok(getBeersResult);
-        }
+        return this.Ok(getBeersResult);
     }
 }

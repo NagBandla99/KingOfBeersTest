@@ -5,7 +5,9 @@
 namespace NB.KingOfBeers.Database.Migrations
 {
     /// <inheritdoc />
+#pragma warning disable IDE1006 // Naming Styles
     public partial class isActiveInBeer : Migration
+#pragma warning restore IDE1006 // Naming Styles
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

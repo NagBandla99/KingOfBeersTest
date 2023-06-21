@@ -1,6 +1,4 @@
-﻿using NB.KingOfBeers.Application.Dtos.Brewery;
-
-namespace NB.KingOfBeers.Application.Services.Contracts;
+﻿namespace NB.KingOfBeers.Application.Services.Contracts;
 
 using NB.KingOfBeers.Application.Dtos.BreweryBeer;
 

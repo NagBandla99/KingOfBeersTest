@@ -1,8 +1,8 @@
 using NB.KingOfBeers.Application.Services.Contracts;
+using NB.KingOfBeers.Application.Dtos.BreweryBeer;
 
 namespace NB.KingOfBeers.Api.Controllers;
 
-using NB.KingOfBeers.Application.Dtos.BreweryBeer;
 
 [ApiController]
 [Route("[controller]")]
@@ -32,7 +32,7 @@ public class BreweryBeerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostAsync(AddBreweryBeer addBreweryBeer, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostAsync(AddBreweryBeer addBreweryBeer)
     {
         var result = await this.breweryBeerService.AddBrewery(addBreweryBeer);
 

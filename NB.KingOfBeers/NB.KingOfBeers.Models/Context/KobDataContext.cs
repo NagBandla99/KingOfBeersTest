@@ -33,4 +33,5 @@ public class KobDataContext : DbContext
     public DbSet<Bar> Bar { get; set; }
     public DbSet<Brewery> Brewery { get; set; }
     public DbSet<BreweryBeers> BreweryBeer { get; set; }
+    public DbSet<BarBeers> BarBeer { get; set; }
 }

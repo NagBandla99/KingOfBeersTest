@@ -1,7 +1,6 @@
 ﻿using NB.KingOfBeers.DataAccess;
 using NB.KingOfBeers.Database.Models;
 using NB.KingOfBeers.Application.Services.Contracts;
-using NB.KingOfBeers.Database.Context;
 using NB.KingOfBeers.Application.Dtos.Bar;
 
 namespace NB.KingOfBeers.Application.Services;
@@ -12,31 +11,19 @@ public class BarService : IBarService
     private readonly IMapper mapper;
     private readonly IGenericRepository<Bar> barRepository;
 
-    private readonly KobDataContext dbContext;
 
-    public BarService(IMapper mapper, IGenericRepository<Bar> barRepository, KobDataContext dbContext)
+    public BarService(IMapper mapper, IGenericRepository<Bar> barRepository)
     {
-        this.mapper = mapper;
-        this.barRepository = barRepository;
-        this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        this.barRepository = barRepository ?? throw new ArgumentNullException(nameof(barRepository));
     }
 
     /// <inheritdoc />
     public async Task<IReadOnlyCollection<BarDto>> GetAllAsync()
     {
-        try
-        {
+        var beers = await this.barRepository.GetWhere(x => !x.IsDeleted);
 
-
-            var beers = await this.barRepository.GetWhere(x => !x.IsDeleted);
-
-            return this.mapper.Map<IReadOnlyCollection<BarDto>>(beers);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return this.mapper.Map<IReadOnlyCollection<BarDto>>(beers);
     }
 
     /// <inheritdoc />

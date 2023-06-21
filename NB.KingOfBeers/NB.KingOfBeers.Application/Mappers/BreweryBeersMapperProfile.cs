@@ -1,8 +1,8 @@
-﻿using NB.KingOfBeers.Database.Models;
+﻿using NB.KingOfBeers.Application.Dtos.BreweryBeer;
+using NB.KingOfBeers.Database.Models;
 
 namespace NB.KingOfBeers.Application.Mappers;
 
-using NB.KingOfBeers.Application.Dtos.BreweryBeer;
 
 public class BreweryBeersMapperProfile : Profile
 {
